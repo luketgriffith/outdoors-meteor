@@ -6,7 +6,6 @@ import { Experiences } from '../../imports/api/experience';
 function* getExp(action) {
   try {
     const exp = yield Experiences.find({}, { sort: { createdAt: -1 } }).fetch();
-    console.log('wheeeeeee', exp)
     yield put({
       type: 'GET_EXPERIENCES_SUCCESS',
       experiences: exp
@@ -17,13 +16,31 @@ function* getExp(action) {
   }
 }
 
+function* getSingleExp(action) {
+  try{
+    const exp = yield Experiences.find({ _id: action.payload._id }).fetch();
+    console.log('yay: ', exp)
+    yield put({
+      type: 'GET_SINGLE_EXPERIENCE_SUCCESS',
+      experience: exp
+    })
+  } catch(err) {
+    console.log('fatal error duuuuude')
+  }
+}
+
 export function* getExperiences() {
   yield* takeEvery('GET_EXPERIENCES', getExp)
 }
 
+export function* watchGetSingleExp() {
+  yield* takeEvery('GET_SINGLE_EXPERIENCE', getSingleExp)
+}
+
 export default function* homeSaga() {
   yield [
-    getExperiences()
+    getExperiences(),
+    watchGetSingleExp()
     // more sagas go here...
   ];
 }
