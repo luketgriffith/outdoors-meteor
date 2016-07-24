@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import reducer from './reducers/reducer';
-// import rootSaga from './sagas/index';
+import rootSaga from './sagas/index';
 const sagaMiddleware = createSagaMiddleware();
 const store = compose(
    applyMiddleware(sagaMiddleware),
@@ -14,7 +14,7 @@ const store = compose(
 )(createStore)(reducer);
 
 // Run sagas
-// sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(rootSaga);
 
 Meteor.startup(() => {
   ReactDOM.render(
