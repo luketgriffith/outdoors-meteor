@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 export default class Main extends Component{
   componentWillMount() {
@@ -19,6 +20,9 @@ export default class Main extends Component{
       return (
         <div>
           <div>Top Bar Nav. {user}</div>
+          <div>Links:
+            <Link to="/createExperience">Create Experience</Link>
+          </div>
           {this.props.children}
         </div>)
 

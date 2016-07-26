@@ -29,6 +29,15 @@ function* getSingleExp(action) {
   }
 }
 
+function* createExp(action) {
+  try {
+    const exp = yield Experiences.insert(action.payload)
+    console.log('yay', exp)
+  } catch(err) {
+    console.log('horrible error man, sorry')
+  }
+}
+
 export function* getExperiences() {
   yield* takeEvery('GET_EXPERIENCES', getExp)
 }
@@ -37,10 +46,14 @@ export function* watchGetSingleExp() {
   yield* takeEvery('GET_SINGLE_EXPERIENCE', getSingleExp)
 }
 
+export function* watchCreate() {
+  yield* takeEvery('CREATE_EXP', createExp)
+}
 export default function* homeSaga() {
   yield [
     getExperiences(),
-    watchGetSingleExp()
+    watchGetSingleExp(),
+    watchCreate()
     // more sagas go here...
   ];
 }
