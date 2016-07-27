@@ -2,6 +2,20 @@ import { takeEvery, takeLatest } from 'redux-saga';
 import { call, put, fork } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { Experiences } from '../../imports/api/experience';
+import superagent from 'superagent';
+
+// function geocode(data) {
+//   console.log(data)
+//    let url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + data.address + ',+' + data.state + '&key=AIzaSyCUn8eTwy5nXeA-S9KUl3XCGfr_rr3ZSTc';
+//    console.log(url);
+//    return new Promise((resolve, reject) => {
+//      superagent
+//       .get(url)
+//       .end(function(err, res) {
+//         console.log('sdddfddfdf', err)
+//       })
+//   })
+// }
 
 function* getExp(action) {
   try {
@@ -31,6 +45,8 @@ function* getSingleExp(action) {
 
 function* createExp(action) {
   try {
+    // const geocoded = yield call(geocode, action.payload)
+    // console.log('wat wat wat: ', geocoded)
     const exp = yield Experiences.insert(action.payload)
     console.log('yay', exp)
   } catch(err) {

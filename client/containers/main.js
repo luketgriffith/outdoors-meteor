@@ -21,6 +21,7 @@ export default class Main extends Component{
         <div>
           <div>Top Bar Nav. {user}</div>
           <div>Links:
+            <Link to="/welcome">Home</Link>
             <Link to="/createExperience">Create Experience</Link>
           </div>
           {this.props.children}

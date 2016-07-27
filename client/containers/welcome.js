@@ -18,7 +18,8 @@ class Welcome extends Component {
 
     if(this.props.experiences.length > 0) {
       exp = this.props.experiences.map((exp) => {
-        return <div key={exp._id}><Link to={"/experiences/" + exp._id }>{exp.name}</Link></div>
+        console.log(exp);
+        return <div key={exp._id}><Link to={"/experiences/" + exp._id }>{exp.title}</Link></div>
       })
     } else {
       exp = <div></div>

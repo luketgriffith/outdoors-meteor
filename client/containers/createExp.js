@@ -12,12 +12,26 @@ class CreateExp extends Component {
   createExp(e) {
     e.preventDefault();
     let { dispatch, form } = this.props;
-    dispatch({
-      type: 'CREATE_EXP',
-      payload: {
-        title: form.title.value,
-        description: form.description.value,
-        user: Meteor.user()._id
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': form.address.value + ',' + form.city.value + ',' + form.state.value}, function(res, status) {
+      console.log('google: ', res)
+      console.log('status: ', status)
+      if(status == 'OK') {
+        dispatch({
+          type: 'CREATE_EXP',
+          payload: {
+            title: form.title.value,
+            description: form.description.value,
+            address: form.address.value,
+            city: form.city.value,
+            state: form.state.value,
+            zip: form.zip.value,
+            long: res[0].geometry.viewport.b.b,
+            lat: res[0].geometry.viewport.f.b,
+            user: Meteor.user()._id
+          }
+        })
+
       }
     })
   }
