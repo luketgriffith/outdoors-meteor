@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 export default class Main extends Component{
   componentWillMount() {
@@ -13,19 +14,27 @@ export default class Main extends Component{
   render() {
     let user;
       if(!this.props.user.profile) {
-        user = ''
+        user = '!'
       } else {
-        user = 'Signed In: ' + this.props.user.profile.firstName;
+        user = ' ' + this.props.user.profile.firstName + '!';
       }
       return (
         <div>
-          <div>Top Bar Nav. {user}</div>
-          <div>Links:
-            <Link to="/welcome">Home</Link>
-            <Link to="/createExperience">Create Experience</Link>
-          </div>
+          <Navbar>
+            <Navbar.Header>
+              <Navbar.Brand>
+                <a href="/welcome">Welcome{user}</a>
+              </Navbar.Brand>
+            </Navbar.Header>
+            <Nav>
+              <NavItem href="/welcome">Home</NavItem>
+              <NavItem href="/createExperience">Create Experience</NavItem>
+
+            </Nav>
+          </Navbar>
           {this.props.children}
-        </div>)
+          </div>
+        )
 
   }
 }

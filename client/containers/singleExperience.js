@@ -20,26 +20,33 @@ class SingleExperience extends Component {
 
   render(){
     let exp;
-    if(this.props.experiences.singleExperience.length > 0) {
-      let lat = this.props.experiences.singleExperience[0].lat;
-      let long = this.props.experiences.singleExperience[0].long;
+    if(this.props.experiences.singleExperience._id.length > 0) {
+      let lat = this.props.experiences.singleExperience.lat;
+      let long = this.props.experiences.singleExperience.long;
 
       exp = (
-        <div style={{ height: 500 }}>
-          <h4>{this.props.experiences.singleExperience[0].name}</h4>
-          <GoogleMapLoader
-            containerElement={
-              <div style={{ height: `100%`  }} />
-            }
-            googleMapElement={
-              <GoogleMap
-                ref={(map) => console.log(map)}
-                defaultZoom={12}
-                defaultCenter={{ lat: lat, lng: long }}
-              >
-              </GoogleMap>
-            }
-          />
+        <div>
+          <h4>{this.props.experiences.singleExperience.title}</h4>
+          <h5>Pictures Go Here</h5>
+          <p>{this.props.experiences.singleExperience.description}</p>
+          <div className="userDetails">
+            <h5>{this.props.experiences.singleExperience.user.profile.firstName} {this.props.experiences.singleExperience.user.profile.lastName}</h5>
+          </div>
+          <div style={{ height: 500 }} className="map">
+            <GoogleMapLoader
+              containerElement={
+                <div style={{ height: `100%`  }} />
+              }
+              googleMapElement={
+                <GoogleMap
+                  ref={(map) => console.log(map)}
+                  defaultZoom={12}
+                  defaultCenter={{ lat: lat, lng: long }}
+                >
+                </GoogleMap>
+              }
+            />
+          </div>
         </div>
         )
     } else {

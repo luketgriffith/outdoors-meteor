@@ -2,7 +2,10 @@ import * as constants from './constants';
 
 const initialState = {
   experiences: [],
-  singleExperience: {}
+  singleExperience: {
+    _id: '',
+    user: {}
+  }
 };
 
 export default function authReducer(state=initialState, action={}) {
