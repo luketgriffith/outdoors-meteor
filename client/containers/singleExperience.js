@@ -2,12 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Experiences } from '../../imports/api/experience';
 import { Link } from 'react-router';
+import Calendar from 'rc-calendar';
 // import Map from '../components/maps/map';
 // import { GoogleMap } from "react-google-maps";
+import 'rc-calendar/assets/index.css';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 
 class SingleExperience extends Component {
+  constructor(props) {
+    super(props)
+
+    this.selectDate = this.selectDate.bind(this);
+    this.disabledDates = this.disabledDates.bind(this);
+  }
+
   componentWillMount() {
     let { dispatch, params } = this.props;
     dispatch({
@@ -16,6 +25,18 @@ class SingleExperience extends Component {
         _id: params.experienceId
       }
     })
+  }
+
+  selectDate(e) {
+    // console.log('wheee: ', e)
+    let date = new Date(e.time)
+    console.log(date)
+  }
+
+  disabledDates(e) {
+    console.log('wat: ', e)
+    // return new Date();
+    return Date.now()
   }
 
   render(){
@@ -32,7 +53,7 @@ class SingleExperience extends Component {
           <div className="userDetails">
             <h5>{this.props.experiences.singleExperience.user.profile.firstName} {this.props.experiences.singleExperience.user.profile.lastName}</h5>
           </div>
-          <div style={{ height: 500 }} className="map">
+          <div style={{ height: 300 }} className="map">
             <GoogleMapLoader
               containerElement={
                 <div style={{ height: `100%`  }} />
@@ -45,6 +66,14 @@ class SingleExperience extends Component {
                 >
                 </GoogleMap>
               }
+            />
+          </div>
+          <div>
+            <h5>Available Dates</h5>
+            <Calendar
+              showDateInput={false}
+              onSelect={this.selectDate}
+              disabledDate={this.disabledDates}
             />
           </div>
         </div>
