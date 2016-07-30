@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {reduxForm} from 'redux-form';
+import Datetime from 'react-datetime';
 
 class CreateForm extends Component {
   render() {
@@ -84,6 +85,10 @@ class CreateForm extends Component {
           <div>
             <label>Zip</label>
             <input type="text" placeholder="Zip Code" {...zip} />
+          </div>
+          <div>
+            <label>Block Out Dates For This Experience To Be Unavailable</label>
+            <Datetime onChange={this.props.blockDates} />
           </div>
           <button type="submit">Submit</button>
         </form>

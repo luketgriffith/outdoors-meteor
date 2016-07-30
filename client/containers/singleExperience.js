@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Experiences } from '../../imports/api/experience';
 import { Link } from 'react-router';
 import Calendar from 'rc-calendar';
+import Datetime from 'react-datetime';
 // import Map from '../components/maps/map';
 // import { GoogleMap } from "react-google-maps";
 import 'rc-calendar/assets/index.css';
@@ -15,6 +16,7 @@ class SingleExperience extends Component {
 
     this.selectDate = this.selectDate.bind(this);
     this.disabledDates = this.disabledDates.bind(this);
+    this.validDate = this.validDate.bind(this);
   }
 
   componentWillMount() {
@@ -28,15 +30,21 @@ class SingleExperience extends Component {
   }
 
   selectDate(e) {
-    // console.log('wheee: ', e)
-    let date = new Date(e.time)
-    console.log(date)
+    console.log('wheee: ', e)
+    // let date = new Date(e.time)
+    // console.log(date)
   }
 
   disabledDates(e) {
-    console.log('wat: ', e)
+    console.log('wat: ', e.target.value)
     // return new Date();
     return Date.now()
+  }
+
+  validDate(current) {
+    return this.props.dates.unavailableDates.forEach((date) => {
+        return current.day() != date
+    })
   }
 
   render(){
@@ -70,11 +78,8 @@ class SingleExperience extends Component {
           </div>
           <div>
             <h5>Available Dates</h5>
-            <Calendar
-              showDateInput={false}
-              onSelect={this.selectDate}
-              disabledDate={this.disabledDates}
-            />
+            <Datetime onChange={this.selectDate} isValidDate={this.validDate}/>
+
           </div>
         </div>
         )

@@ -4,7 +4,10 @@ const initialState = {
   experiences: [],
   singleExperience: {
     _id: '',
-    user: {}
+    user: {},
+    dates: {
+      unavailableDates: []
+    }
   }
 };
 
@@ -14,6 +17,8 @@ export default function authReducer(state=initialState, action={}) {
       return { ...state, experiences: action.experiences }
     case constants.GET_SINGLE_EXPERIENCE_SUCCESS:
       return { ...state, singleExperience: action.experience }
+    case constants.BLOCK_DATE:
+      return { ...state, singleExperience: { ...state.singleExperience, dates: { ...state.singleExperience.dates, unavailableDates: action.payload } }  }
     default:
       return state;
   }
