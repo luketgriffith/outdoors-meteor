@@ -14,7 +14,7 @@ class CreateExp extends Component {
 
   createExp(e) {
     e.preventDefault();
-    let { dispatch, form } = this.props;
+    let { dispatch, form, dates } = this.props;
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'address': form.address.value + ',' + form.city.value + ',' + form.state.value}, function(res, status) {
       if(status == 'OK') {
@@ -31,7 +31,7 @@ class CreateExp extends Component {
             lat: res[0].geometry.viewport.f.b,
             user: Meteor.user()._id,
             dates: {
-              unavailableDates: this.props.dates.unavailableDates
+              unavailableDates: dates.unavailableDates
             }
           }
         })

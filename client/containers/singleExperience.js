@@ -4,6 +4,7 @@ import { Experiences } from '../../imports/api/experience';
 import { Link } from 'react-router';
 import Calendar from 'rc-calendar';
 import Datetime from 'react-datetime';
+import moment from 'moment';
 // import Map from '../components/maps/map';
 // import { GoogleMap } from "react-google-maps";
 import 'rc-calendar/assets/index.css';
@@ -15,7 +16,6 @@ class SingleExperience extends Component {
     super(props)
 
     this.selectDate = this.selectDate.bind(this);
-    this.disabledDates = this.disabledDates.bind(this);
     this.validDate = this.validDate.bind(this);
   }
 
@@ -35,16 +35,23 @@ class SingleExperience extends Component {
     // console.log(date)
   }
 
-  disabledDates(e) {
-    console.log('wat: ', e.target.value)
-    // return new Date();
-    return Date.now()
-  }
 
   validDate(current) {
-    return this.props.dates.unavailableDates.forEach((date) => {
-        return current.day() != date
-    })
+    console.log('current: ', current._d);
+    // let yesterday = Datetime.moment().subtract(1,'day');
+    // return current.isAfter(yesterday)
+    console.log('props: ', this.props);
+
+    let newA = this.props.dates.unavailableDates.find((date) => {
+      console.log(date);
+      return !moment(current._d).isSame(date) })
+    console.log('new..'. newA)
+    return newA;
+
+
+    // var valid = function( current ){
+    // return current.isAfter( yesterday );
+    // };
   }
 
   render(){
@@ -98,7 +105,8 @@ class SingleExperience extends Component {
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
-    experiences: state.experiences
+    experiences: state.experiences,
+    dates: state.experiences.singleExperience.dates
   }
 }
 
