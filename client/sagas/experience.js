@@ -12,12 +12,12 @@ import superagent from 'superagent';
 function* reserve(action) {
   try {
     const res = yield Reservations.insert(action);
+    yield browserHistory.push('/reservation/' + res)
     yield Meteor.call('sendEmail',
-                'luketgriffith@gmail.com',
-                'bob@example.com',
-                'Hello from Meteor!',
-                'This is a test of Email.send.');
-    yield browserHistory.push('/welcome')
+    'luketgriffith@gmail.com',
+    'bob@example.com',
+    'Hello from Meteor!',
+    'This is a test of Email.send.');
   } catch(err) {
     alert('man sorry bout that, it didnt work')
     console.log('man thats the worst error')
