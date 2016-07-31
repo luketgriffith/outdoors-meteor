@@ -77,7 +77,6 @@ class Home extends Component{
 }
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     form: state.form
   }

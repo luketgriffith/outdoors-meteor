@@ -6,7 +6,8 @@ const initialState = {
     _id: '',
     user: {},
     dates: {
-      unavailableDates: []
+      unavailableDates: [],
+      selectedDate: ''
     }
   }
 };

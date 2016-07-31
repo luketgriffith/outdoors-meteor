@@ -59,7 +59,6 @@ class CreateExp extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('stateeeeeee', state)
   return {
     form: state.form.createForm,
     dates: state.experiences.singleExperience.dates

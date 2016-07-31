@@ -4,6 +4,7 @@ import {reducer as formReducer} from 'redux-form';
 import AuthReducer from './authReducer';
 import Location from './singleLocation';
 import Experiences from './experiences';
+import Reservation from './reservation';
 //import reducers up here ...
 //import reducer1 from la la la
 
@@ -12,5 +13,6 @@ export default combineReducers({
   auth: AuthReducer,
   location: Location,
   form: formReducer,
-  experiences: Experiences
+  experiences: Experiences,
+  reservation: Reservation
 });

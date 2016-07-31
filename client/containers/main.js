@@ -40,7 +40,6 @@ export default class Main extends Component{
 }
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     user: state.auth.user
   }

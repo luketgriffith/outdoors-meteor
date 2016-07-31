@@ -2,10 +2,27 @@ import { takeEvery, takeLatest } from 'redux-saga';
 import { call, put, fork } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { Experiences } from '../../imports/api/experience';
+import { Reservations } from '../../imports/api/reservations';
+
 
 import superagent from 'superagent';
 
 
+
+function* reserve(action) {
+  try {
+    const res = yield Reservations.insert(action);
+    yield Meteor.call('sendEmail',
+                'luketgriffith@gmail.com',
+                'bob@example.com',
+                'Hello from Meteor!',
+                'This is a test of Email.send.');
+    yield browserHistory.push('/welcome')
+  } catch(err) {
+    alert('man sorry bout that, it didnt work')
+    console.log('man thats the worst error')
+  }
+}
 
 function* getExp(action) {
   try {
@@ -24,9 +41,7 @@ function* getSingleExp(action) {
   let expObj = {}
   try{
     const exp = yield Experiences.find({ _id: action.payload._id }).fetch();
-    console.log(exp)
     const user = yield Meteor.users.find({ _id: exp[0].user }).fetch();
-    console.log(user);
     Object.assign(expObj, exp[0]);
     expObj.user = user[0];
     yield put({
@@ -60,11 +75,17 @@ export function* watchGetSingleExp() {
 export function* watchCreate() {
   yield* takeEvery('CREATE_EXP', createExp)
 }
+
+export function* watchReserve() {
+  yield* takeEvery('RESERVE', reserve)
+}
+
 export default function* homeSaga() {
   yield [
     getExperiences(),
     watchGetSingleExp(),
-    watchCreate()
+    watchCreate(),
+    watchReserve()
     // more sagas go here...
   ];
 }

@@ -9,6 +9,7 @@ import moment from 'moment';
 // import { GoogleMap } from "react-google-maps";
 import 'rc-calendar/assets/index.css';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
+import ExperienceActions from '../actions/experiences';
 
 
 class SingleExperience extends Component {
@@ -17,6 +18,7 @@ class SingleExperience extends Component {
 
     this.selectDate = this.selectDate.bind(this);
     this.validDate = this.validDate.bind(this);
+    this.reserve = this.reserve.bind(this);
   }
 
   componentWillMount() {
@@ -30,28 +32,35 @@ class SingleExperience extends Component {
   }
 
   selectDate(e) {
-    console.log('wheee: ', e)
-    // let date = new Date(e.time)
-    // console.log(date)
+    let { dispatch } = this.props;
+    let date = e._d;
+
+    dispatch(ExperienceActions.selectDate(date));
   }
 
 
   validDate(current) {
-    console.log('current: ', current._d);
-    // let yesterday = Datetime.moment().subtract(1,'day');
-    // return current.isAfter(yesterday)
-    console.log('props: ', this.props);
-
     let newA = this.props.dates.unavailableDates.find((date) => {
-      console.log(date);
-      return !moment(current._d).isSame(date) })
-    console.log('new..'. newA)
-    return newA;
+      return Datetime.moment(current._d).isSame(date, 'day')
+    });
 
+    if(newA) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
-    // var valid = function( current ){
-    // return current.isAfter( yesterday );
-    // };
+  reserve() {
+    let { dispatch, experiences, reservation } = this.props;
+    let data = {
+      user: Meteor.user(),
+      experience: experiences.singleExperience,
+      date: reservation.selectedDate
+    }
+
+    dispatch(ExperienceActions.reserve(data))
+
   }
 
   render(){
@@ -85,8 +94,11 @@ class SingleExperience extends Component {
           </div>
           <div>
             <h5>Available Dates</h5>
-            <Datetime onChange={this.selectDate} isValidDate={this.validDate}/>
-
+            <Datetime onChange={this.selectDate} isValidDate={this.validDate} input={false} open={true}/>
+          </div>
+          <div>
+            <h5>Book This Experience!</h5>
+            <button className="btn btn-primary" onClick={this.reserve}>Book</button>
           </div>
         </div>
         )
@@ -103,10 +115,12 @@ class SingleExperience extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state);
   return {
     user: state.auth.user,
     experiences: state.experiences,
-    dates: state.experiences.singleExperience.dates
+    dates: state.experiences.singleExperience.dates,
+    reservation: state.reservation
   }
 }
 
