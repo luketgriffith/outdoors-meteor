@@ -17,6 +17,8 @@ const store = compose(
 sagaMiddleware.run(rootSaga);
 
 Meteor.startup(() => {
+  Meteor.subscribe('allUsers');
+
   ReactDOM.render(
     <Provider store={store}>
     <Router routes={routes} history={browserHistory} />

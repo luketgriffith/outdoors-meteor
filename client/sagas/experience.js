@@ -11,13 +11,20 @@ import superagent from 'superagent';
 
 function* reserve(action) {
   try {
+    console.log('action: ', action)
+    let mailTo = Meteor.users.find({ _id: action.payload.experience.user._id }).fetch();
+    // yield Meteor.call('getUserMail', action.payload.experience.user._id, (res) => {
+    //   console.log('found it: ', res)
+    // })
+    console.log('mailTo: ', mailTo)
     const res = yield Reservations.insert(action);
-    yield browserHistory.push('/reservation/' + res)
-    yield Meteor.call('sendEmail',
-    'luketgriffith@gmail.com',
-    'bob@example.com',
-    'Hello from Meteor!',
-    'This is a test of Email.send.');
+    // yield browserHistory.push('/reservation/' + res)
+    yield Meteor.call('sendEmail', {
+    to: mailTo[0].emails[0].address,
+    from: 'Webmaster at GoFishCampHike',
+    subject: 'Your experience was reserved!',
+    text: 'User ' + action.payload.user.emails[0].address + ' has reserved your experience' + action.payload.experience.title + 'for ' + action.payload.date + '.'
+  });
   } catch(err) {
     alert('man sorry bout that, it didnt work')
     console.log('man thats the worst error')
