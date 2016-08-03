@@ -15,3 +15,6 @@ export const GET_SINGLE_EXPERIENCE_SUCCESS = 'GET_SINGLE_EXPERIENCE_SUCCESS';
 export const BLOCK_DATE = 'BLOCK_DATE';
 export const SELECT_DATE = 'SELECT_DATE';
 export const RESERVE = 'RESERVE';
+export const RESERVE_EXP = 'RESERVE_EXP';
+export const CONFIRM_RES = 'CONFIRM_RES';
+export const FLUSH_RES = 'FLUSH_RES';

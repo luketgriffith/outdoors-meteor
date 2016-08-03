@@ -14,6 +14,6 @@ export default (
     <Route path="/welcome" component={Welcome} />
     <Route path="/experiences/:experienceId" component={SingleExperience} />
     <Route path="/createExperience" component={CreateExp} />
-    <Reservation path="/reservation/:resId" component={Reservation} />
+    <Reservation path="/reservation" component={Reservation} />
   </Route>
 );

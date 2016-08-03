@@ -33,7 +33,7 @@ class SingleExperience extends Component {
 
   selectDate(e) {
     let { dispatch } = this.props;
-    let date = e._d;
+    let date = e._d.toString();
 
     dispatch(ExperienceActions.selectDate(date));
   }

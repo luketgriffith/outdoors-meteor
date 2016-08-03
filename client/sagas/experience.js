@@ -4,27 +4,31 @@ import { browserHistory } from 'react-router';
 import { Experiences } from '../../imports/api/experience';
 import { Reservations } from '../../imports/api/reservations';
 
-
-import superagent from 'superagent';
-
-
+function* confirmRes(action) {
+  try {
+    const res = yield Reservations.insert(action);
+    yield Meteor.call('sendEmail', {
+      to: action.payload.reservation.host.emails[0].address,
+      from: 'Webmaster at GoFishCampHike',
+      subject: 'Your experience was reserved!',
+      text: action.payload.reservation.reservedBy.profile.firstName + action.payload.reservation.reservedBy.profile.lastName + ' has reserved your experience: ' + action.payload.reservation.experience.title + ' at : ' +
+      action.payload.selectedDate + '. Please check your dashboard for more details.'
+    });
+    yield browserHistory.push('/welcome');
+  } catch(err) {
+    console.log('didnt work dude')
+  }
+}
 
 function* reserve(action) {
+  console.log(action)
   try {
-    console.log('action: ', action)
-    let mailTo = Meteor.users.find({ _id: action.payload.experience.user._id }).fetch();
-    // yield Meteor.call('getUserMail', action.payload.experience.user._id, (res) => {
-    //   console.log('found it: ', res)
-    // })
-    console.log('mailTo: ', mailTo)
-    const res = yield Reservations.insert(action);
-    // yield browserHistory.push('/reservation/' + res)
-    yield Meteor.call('sendEmail', {
-    to: mailTo[0].emails[0].address,
-    from: 'Webmaster at GoFishCampHike',
-    subject: 'Your experience was reserved!',
-    text: 'User ' + action.payload.user.emails[0].address + ' has reserved your experience' + action.payload.experience.title + 'for ' + action.payload.date + '.'
-  });
+    yield put({ type: 'RESERVE_EXP', payload: {
+      experience: action.payload.experience,
+      host: action.payload.experience.user,
+      reservedBy: Meteor.user()
+    }});
+    yield browserHistory.push('/reservation');
   } catch(err) {
     alert('man sorry bout that, it didnt work')
     console.log('man thats the worst error')
@@ -33,11 +37,7 @@ function* reserve(action) {
 
 function* getExp(action) {
   try {
-    const exp = yield Experiences.find({}, { sort: { createdAt: -1 } }).fetch();
-    yield put({
-      type: 'GET_EXPERIENCES_SUCCESS',
-      experiences: exp
-    })
+  
   } catch(err) {
     //do something
     console.log('fatal error dude')
@@ -87,12 +87,17 @@ export function* watchReserve() {
   yield* takeEvery('RESERVE', reserve)
 }
 
+export function* watchConfirm() {
+  yield* takeEvery('CONFIRM_RES', confirmRes)
+}
+
 export default function* homeSaga() {
   yield [
     getExperiences(),
     watchGetSingleExp(),
     watchCreate(),
-    watchReserve()
+    watchReserve(),
+    watchConfirm()
     // more sagas go here...
   ];
 }

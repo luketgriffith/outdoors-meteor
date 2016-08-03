@@ -7,10 +7,12 @@ import { Link } from 'react-router';
 class Welcome extends Component {
   componentWillMount() {
     let { dispatch } = this.props;
-    dispatch({
-      type: 'GET_EXPERIENCES',
-      payload: 'nothing right now'
-    })
+    Meteor.call('getExpByLocation', function (err, res) {
+      dispatch({
+        type: 'GET_EXPERIENCES_SUCCESS',
+        experiences: res
+      });
+    });
   }
 
   render(){
@@ -22,7 +24,7 @@ class Welcome extends Component {
         return <div key={exp._id}><Link to={"/experiences/" + exp._id }>{exp.title}</Link></div>
       })
     } else {
-      exp = <div></div>
+      exp = <div>Loading experiences...</div>
     }
 
     return(

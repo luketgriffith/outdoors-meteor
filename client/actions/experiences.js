@@ -20,5 +20,12 @@ export default {
       type: constants.RESERVE,
       payload: data
     }
+  },
+
+  confirmRes: (res) => {
+    return {
+      type: constants.CONFIRM_RES,
+      payload: res
+    }
   }
 }
