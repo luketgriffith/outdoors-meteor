@@ -27,8 +27,8 @@ class CreateExp extends Component {
             city: form.city.value,
             state: form.state.value,
             zip: form.zip.value,
-            long: res[0].geometry.viewport.b.b,
-            lat: res[0].geometry.viewport.f.b,
+            longitude: res[0].geometry.viewport.b.b,
+            latitude: res[0].geometry.viewport.f.b,
             user: Meteor.user()._id,
             dates: {
               unavailableDates: dates.unavailableDates

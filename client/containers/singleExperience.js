@@ -31,6 +31,14 @@ class SingleExperience extends Component {
     })
   }
 
+  componentWillUnmount() {
+    let { dispatch, params } = this.props;
+    dispatch({
+      type: 'SINGLE_EXP_FLUSH',
+      payload: {}
+    })
+  }
+
   selectDate(e) {
     let { dispatch } = this.props;
     let date = e._d.toString();
@@ -66,8 +74,6 @@ class SingleExperience extends Component {
   render(){
     let exp;
     if(this.props.experiences.singleExperience._id.length > 0) {
-      let lat = this.props.experiences.singleExperience.lat;
-      let long = this.props.experiences.singleExperience.long;
 
       exp = (
         <div>
@@ -86,7 +92,7 @@ class SingleExperience extends Component {
                 <GoogleMap
                   ref={(map) => console.log(map)}
                   defaultZoom={12}
-                  defaultCenter={{ lat: lat, lng: long }}
+                  defaultCenter={{ lat: this.props.experiences.singleExperience.latitude, lng: this.props.experiences.singleExperience.longitude }}
                 >
                 </GoogleMap>
               }

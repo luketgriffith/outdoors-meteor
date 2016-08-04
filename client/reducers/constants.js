@@ -18,3 +18,4 @@ export const RESERVE = 'RESERVE';
 export const RESERVE_EXP = 'RESERVE_EXP';
 export const CONFIRM_RES = 'CONFIRM_RES';
 export const FLUSH_RES = 'FLUSH_RES';
+export const SINGLE_EXP_FLUSH = 'SINGLE_EXP_FLUSH';

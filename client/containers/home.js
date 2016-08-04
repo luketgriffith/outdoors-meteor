@@ -39,30 +39,36 @@ class Home extends Component{
   signUp(e) {
     e.preventDefault();
     let { dispatch, form } = this.props;
-    let user = {
-      email: form.signUp.email.value,
-      password: form.signUp.password.value,
-      profile: {
-        firstName: form.signUp.firstName.value,
-        lastName: form.signUp.lastName.value,
-        zipCode: form.signUp.zip.value
-      }
-    }
-    Accounts.createUser(user, function(err, res) {
-      if(err) {
-        console.log('error', err)
-        alert('Error Signing Up')
-      } else {
-        browserHistory.push('/welcome')
-        dispatch({
-          type: 'SET_USER',
-          user: Meteor.user()
-        });
+
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': form.signUp.address.value}, function(res, status) {
+      if(status == 'OK') {
+        let user = {
+          email: form.signUp.email.value,
+          password: form.signUp.password.value,
+          profile: {
+            firstName: form.signUp.firstName.value,
+            lastName: form.signUp.lastName.value,
+            address: form.signUp.address.value,
+            latitude: res[0].geometry.viewport.f.b,
+            longitude: res[0].geometry.viewport.b.b,
+          }
+        }
+
+        Accounts.createUser(user, function(err, res) {
+          if(err) {
+            console.log('error', err)
+            alert('Error Signing Up')
+          } else {
+            browserHistory.push('/welcome')
+            dispatch({
+              type: 'SET_USER',
+              user: Meteor.user()
+            });
+          }
+        })
       }
     })
-
-
-
   }
 
   render() {

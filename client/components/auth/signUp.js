@@ -3,7 +3,7 @@ import {reduxForm} from 'redux-form';
 
 class SignUp extends Component {
   render() {
-    const {fields: {email, password, firstName, lastName, zip}} = this.props;
+    const {fields: {email, password, firstName, lastName, address}} = this.props;
     return (
       <div className="signUpForm col-md-6">
       <h4>Sign Up</h4>
@@ -26,7 +26,7 @@ class SignUp extends Component {
         </div>
         <div>
           <label>Zip Code</label>
-          <input type="text" placeholder="Zip Code" {...zip} />
+          <input type="text" placeholder="Address" {...address} />
         </div>
         <button type="submit">Submit</button>
       </form>
@@ -37,7 +37,7 @@ class SignUp extends Component {
 
 SignUp = reduxForm({ // <----- THIS IS THE IMPORTANT PART!
   form: 'signUp',                           // a unique name for this form
-  fields: ['email', 'password', 'firstName', 'lastName', 'zip'] // all the fields in your form
+  fields: ['email', 'password', 'firstName', 'lastName', 'address'] // all the fields in your form
 })(SignUp);
 
 export default SignUp;

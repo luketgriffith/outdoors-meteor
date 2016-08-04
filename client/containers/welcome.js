@@ -3,8 +3,13 @@ import { connect } from 'react-redux';
 import Profile from '../components/welcome/profile';
 import { Experiences } from '../../imports/api/experience';
 import { Link } from 'react-router';
+import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 class Welcome extends Component {
+  constructor(props) {
+    super(props);
+    this.hover = this.hover.bind(this);
+  }
   componentWillMount() {
     let { dispatch } = this.props;
     Meteor.call('getExpByLocation', function (err, res) {
@@ -13,6 +18,11 @@ class Welcome extends Component {
         experiences: res
       });
     });
+  }
+
+  hover() {
+    console.log('lsdjfl;sajkdf')
+    //display the experience on hover
   }
 
   render(){
@@ -30,6 +40,35 @@ class Welcome extends Component {
     return(
       <div>
       <h4>Welcome!</h4>
+      <div style={{ height: 300 }} className="map">
+        <GoogleMapLoader
+          containerElement={
+            <div style={{ height: `100%`  }} />
+          }
+          googleMapElement={
+            <GoogleMap
+              ref={(map) => console.log(map)}
+              defaultZoom={5}
+              defaultCenter={{ lat: Meteor.user().profile.latitude, lng: Meteor.user().profile.longitude }}
+            >
+            {this.props.experiences.map((marker, index) => {
+              let pos = {
+                lat: marker.latitude,
+                lng: marker.longitude
+              }
+              return (
+                <Marker
+                  position={pos}
+                  key={marker._id}
+                  onMouseover={this.hover}
+
+                />
+              );
+            })}
+            </GoogleMap>
+          }
+        />
+      </div>
       {exp}
       </div>
     )

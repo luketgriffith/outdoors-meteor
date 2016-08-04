@@ -3,6 +3,7 @@ import '../imports/api/tasks.js';
 import { Experiences } from '../imports/api/experience.js';
 import '../imports/api/reservations.js';
 import { Email } from 'meteor/email'
+import geolib from 'geolib';
 
 Meteor.startup(() => {
   // code to run on server at startup
@@ -35,9 +36,29 @@ Meteor.methods({
 
     getExpByLocation: function(location) {
       let exp = Experiences.find({}).fetch();
-      console.log('exp: ', exp)
-      //for each, return closest
-      return exp;
+      let newArray = exp.map(function(experience){
+        let user = {
+          latitude: Meteor.user().profile.latitude,
+          longitude: Meteor.user().profile.longitude
+        }
+
+        let distance = geolib.getDistance(
+          user, {
+            latitude: experience.latitude,
+            longitude: experience.longitude
+          });
+
+        let newExp = {};
+        Object.assign(newExp, experience);
+        newExp.distance = distance;
+        return newExp
+      })
+
+      newArray.sort(function(a, b) {
+        return a.distance - b.distance
+      });
+      
+      return newArray;
     }
 
 });
