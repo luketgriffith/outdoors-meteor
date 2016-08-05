@@ -3,15 +3,22 @@ import { connect } from 'react-redux';
 import Profile from '../components/welcome/profile';
 import { Experiences } from '../../imports/api/experience';
 import { Link } from 'react-router';
-import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
+import { GoogleMapLoader, GoogleMap, Marker, InfoWindow } from "react-google-maps";
+import HoverExp from '../components/experiences/expHover';
 
 class Welcome extends Component {
   constructor(props) {
     super(props);
     this.hover = this.hover.bind(this);
+    this.showDetail = this.showDetail.bind(this);
+    this.handleMarkerClose = this.handleMarkerClose.bind(this);
   }
   componentWillMount() {
     let { dispatch } = this.props;
+    this.setState({
+      showInfo: false
+    });
+
     Meteor.call('getExpByLocation', function (err, res) {
       dispatch({
         type: 'GET_EXPERIENCES_SUCCESS',
@@ -20,9 +27,62 @@ class Welcome extends Component {
     });
   }
 
-  hover() {
-    console.log('lsdjfl;sajkdf')
-    //display the experience on hover
+  hover(marker) {
+    let { dispatch, experiences } = this.props;
+    let newArray = experiences.map((exp) => {
+      if(exp._id === marker._id) {
+        console.log('found it')
+        newObj = {};
+        Object.assign(newObj, exp)
+        newObj.showInfo = true;
+        return newObj;
+      } else {
+        return exp;
+      }
+    })
+
+    console.log(newArray)
+    dispatch({
+      type: 'HOVER',
+      payload: newArray
+    });
+
+
+  }
+
+
+  showDetail(marker) {
+    console.log('showin details', marker)
+    return(
+      <InfoWindow
+        onCloseclick={this.handleMarkerClose.bind(null, marker)}>
+        <div>
+          <h5><a href={"/experiences/" + marker._id }>{marker.title}</a></h5>
+          <h5>More info here</h5>
+        </div>
+      </InfoWindow>
+    )
+  }
+
+  handleMarkerClose(marker) {
+    console.log('the marker to close: ', marker)
+    let { dispatch, experiences } = this.props;
+    let newArray = experiences.map((exp) => {
+      if(exp._id === marker._id) {
+        newObj = {};
+        Object.assign(newObj, exp)
+        newObj.showInfo = false;
+        return newObj;
+      } else {
+        return exp;
+      }
+    });
+
+    dispatch({
+      type: 'HOVER_CLOSE',
+      payload: newArray
+    });
+
   }
 
   render(){
@@ -30,7 +90,6 @@ class Welcome extends Component {
 
     if(this.props.experiences.length > 0) {
       exp = this.props.experiences.map((exp) => {
-        console.log(exp);
         return <div key={exp._id}><Link to={"/experiences/" + exp._id }>{exp.title}</Link></div>
       })
     } else {
@@ -40,7 +99,8 @@ class Welcome extends Component {
     return(
       <div>
       <h4>Welcome!</h4>
-      <div style={{ height: 300 }} className="map">
+      <HoverExp visible={this.state.visible} dismiss={this.dismiss}/>
+      <div style={{ height: 1000 }} className="map">
         <GoogleMapLoader
           containerElement={
             <div style={{ height: `100%`  }} />
@@ -49,7 +109,7 @@ class Welcome extends Component {
             <GoogleMap
               ref={(map) => console.log(map)}
               defaultZoom={5}
-              defaultCenter={{ lat: Meteor.user().profile.latitude, lng: Meteor.user().profile.longitude }}
+              defaultCenter={{ lat: Meteor.user() ? Meteor.user().profile.latitude : 35 , lng: Meteor.user() ? Meteor.user().profile.longitude : 88 }}
             >
             {this.props.experiences.map((marker, index) => {
               let pos = {
@@ -60,9 +120,12 @@ class Welcome extends Component {
                 <Marker
                   position={pos}
                   key={marker._id}
-                  onMouseover={this.hover}
+                  onMouseover={this.hover.bind(null, marker)}>
 
-                />
+                  {marker.showInfo ? this.showDetail(marker) : null}
+
+
+                  </Marker>
               );
             })}
             </GoogleMap>
@@ -76,6 +139,7 @@ class Welcome extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log('state: ', state)
   return {
     user: state.auth.user,
     experiences: state.experiences.experiences

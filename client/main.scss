@@ -4,6 +4,20 @@
   }
 }
 
+.map{
+  width: 1000px;
+  display: block;
+  margin: 50px auto;
+}
+
+#hover{
+  position: fixed;
+  z-index: 999;
+  background-color: #EEE;
+  height: 300px;
+  overflow: hidden;;
+}
+
 #mapid{
   height: 480px;
 }

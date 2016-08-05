@@ -22,6 +22,10 @@ export default function authReducer(state=initialState, action={}) {
       return { ...state, singleExperience: { ...state.singleExperience, dates: { ...state.singleExperience.dates, unavailableDates: action.payload } }  }
     case constants.SINGLE_EXP_FLUSH:
         return { ...state, singleExperience: state.singleExperience }
+    case constants.HOVER:
+        return { ...state, experiences: action.payload };
+    case constants.HOVER_CLOSE:
+      return { ...state, experiences: action.payload };
     default:
       return state;
   }
