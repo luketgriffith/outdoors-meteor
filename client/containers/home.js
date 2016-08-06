@@ -73,9 +73,14 @@ class Home extends Component{
 
   render() {
       return (
-        <div>
-          <SignIn signIn={this.signIn}/>
-          <SignUp signUp={this.signUp} />
+        <div className="homePage">
+          <h3>Outdoors</h3>
+          <div className="signInForm col-md-6">
+            <SignIn signIn={this.signIn}/>
+          </div>
+          <div className="signUpForm col-md-6">
+            <SignUp signUp={this.signUp} />
+          </div>
         </div>
       )
 

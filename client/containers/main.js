@@ -32,7 +32,9 @@ export default class Main extends Component{
 
             </Nav>
           </Navbar>
-          {this.props.children}
+            <div className="content-main">
+            {this.props.children}
+            </div>
           </div>
         )
 

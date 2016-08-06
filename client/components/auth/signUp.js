@@ -5,7 +5,7 @@ class SignUp extends Component {
   render() {
     const {fields: {email, password, firstName, lastName, address}} = this.props;
     return (
-      <div className="signUpForm col-md-6">
+      <div>
       <h4>Sign Up</h4>
       <form onSubmit={this.props.signUp} className="form">
         <div>

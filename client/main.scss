@@ -1,9 +1,19 @@
 .signInForm{
-  form{
-
+  background-color: transparent;
+}
+.signUpForm{
+  background-color: transparent;
+}
+.homePage{
+  height: 100vh;
+  background-image: url("https://hd.unsplash.com/photo-1414394825544-67fa8e8e28ea");
+  h3{
+    margin: 0;
   }
 }
-
+.navbar .navbar-default{
+  margin-bottom: 0;
+}
 .map{
   width: 1000px;
   display: block;
