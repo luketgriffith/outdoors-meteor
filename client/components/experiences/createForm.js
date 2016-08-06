@@ -90,6 +90,10 @@ class CreateForm extends Component {
             <label>Block Out Dates For This Experience To Be Unavailable</label>
             <Datetime onChange={this.props.blockDates} />
           </div>
+
+
+          {/*<input type="filepicker" data-fp-apikey="AVfjXwFPTQgCfg5eJctYwz" data-fp-button-text="Choose Images"/>*/}
+          <a className="btn btn-primary" onClick={this.props.uploadImages}>Upload Images</a>
           <button type="submit">Submit</button>
         </form>
       </div>

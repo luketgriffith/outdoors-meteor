@@ -59,6 +59,11 @@ class Welcome extends Component {
         <div>
           <h5><a href={"/experiences/" + marker._id }>{marker.title}</a></h5>
           <h5>More info here</h5>
+          <div className="imgRow">
+            {marker.images.map((img)=>{
+              return <img src={img.url} />
+            })}
+          </div>
         </div>
       </InfoWindow>
     )

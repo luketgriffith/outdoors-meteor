@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import CreateForm from '../components/experiences/createForm';
 import Datetime from 'react-datetime';
 import ExperienceActions from '../actions/experiences';
+import filepicker from 'filepicker-js';
 
 class CreateExp extends Component {
   constructor(props) {
@@ -10,11 +11,33 @@ class CreateExp extends Component {
 
     this.createExp = this.createExp.bind(this);
     this.blockDates = this.blockDates.bind(this);
+    this.uploadImages = this.uploadImages.bind(this);
+  }
+
+  uploadImages() {
+    let { dispatch } = this.props;
+    filepicker.setKey("AVfjXwFPTQgCfg5eJctYwz")
+    filepicker.pickMultiple(
+    {
+      services: ['COMPUTER', 'FACEBOOK', 'BOX', 'IMGUR', 'CLOUDDRIVE'],
+    },
+    function(Blobs){
+      dispatch({
+        type: 'UPLOAD_IMAGES',
+        payload: Blobs
+      });
+    },
+    function(error){
+      //  console.log(JSON.stringify(error)); - print errors to console
+      alert('Error uploading images.')
+    }
+
+  );
   }
 
   createExp(e) {
     e.preventDefault();
-    let { dispatch, form, dates } = this.props;
+    let { dispatch, form, dates, images } = this.props;
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'address': form.address.value + ',' + form.city.value + ',' + form.state.value}, function(res, status) {
       if(status == 'OK') {
@@ -23,6 +46,7 @@ class CreateExp extends Component {
           payload: {
             title: form.title.value,
             description: form.description.value,
+            images: images,
             address: form.address.value,
             city: form.city.value,
             state: form.state.value,
@@ -51,7 +75,7 @@ class CreateExp extends Component {
   render() {
     return(
       <div>
-        <CreateForm createExp={this.createExp} blockDates={this.blockDates}/>
+        <CreateForm createExp={this.createExp} blockDates={this.blockDates} uploadImages={this.uploadImages}/>
 
       </div>
     )
@@ -61,7 +85,8 @@ class CreateExp extends Component {
 function mapStateToProps(state) {
   return {
     form: state.form.createForm,
-    dates: state.experiences.singleExperience.dates
+    dates: state.experiences.singleExperience.dates,
+    images: state.experiences.images
   }
 }
 

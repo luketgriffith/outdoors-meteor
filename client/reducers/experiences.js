@@ -2,6 +2,7 @@ import * as constants from './constants';
 
 const initialState = {
   experiences: [],
+  images: [],
   singleExperience: {
     _id: '',
     user: {},
@@ -26,6 +27,8 @@ export default function authReducer(state=initialState, action={}) {
         return { ...state, experiences: action.payload };
     case constants.HOVER_CLOSE:
       return { ...state, experiences: action.payload };
+    case constants.UPLOAD_IMAGES:
+      return { ...state, images: action.payload }
     default:
       return state;
   }

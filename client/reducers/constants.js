@@ -21,3 +21,4 @@ export const FLUSH_RES = 'FLUSH_RES';
 export const SINGLE_EXP_FLUSH = 'SINGLE_EXP_FLUSH';
 export const HOVER = 'HOVER';
 export const HOVER_CLOSE = 'HOVER_CLOSE';
+export const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
