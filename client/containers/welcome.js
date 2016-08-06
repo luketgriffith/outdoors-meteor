@@ -5,6 +5,7 @@ import { Experiences } from '../../imports/api/experience';
 import { Link } from 'react-router';
 import { GoogleMapLoader, GoogleMap, Marker, InfoWindow } from "react-google-maps";
 import HoverExp from '../components/experiences/expHover';
+import { browserHistory } from 'react-router';
 
 class Welcome extends Component {
   constructor(props) {
@@ -52,12 +53,11 @@ class Welcome extends Component {
 
 
   showDetail(marker) {
-    console.log('showin details', marker)
     return(
       <InfoWindow
         onCloseclick={this.handleMarkerClose.bind(null, marker)}>
         <div>
-          <h5><a href={"/experiences/" + marker._id }>{marker.title}</a></h5>
+          <h5 onClick={() => browserHistory.push("/experiences/" + marker._id)}>{marker.title}</h5>
           <h5>More info here</h5>
           <div className="imgRow">
             {marker.images.map((img)=>{
@@ -70,7 +70,6 @@ class Welcome extends Component {
   }
 
   handleMarkerClose(marker) {
-    console.log('the marker to close: ', marker)
     let { dispatch, experiences } = this.props;
     let newArray = experiences.map((exp) => {
       if(exp._id === marker._id) {
@@ -101,45 +100,49 @@ class Welcome extends Component {
       exp = <div>Loading experiences...</div>
     }
 
-    return(
-      <div>
-      <h4>Welcome!</h4>
-      <HoverExp visible={this.state.visible} dismiss={this.dismiss}/>
-      <div style={{ height: 1000 }} className="map">
+    if(Meteor.user()){
+      return(
+        <div>
+        <h4>Welcome!</h4>
+        <HoverExp visible={this.state.visible} dismiss={this.dismiss}/>
+        <div style={{ height: 1000 }} className="map">
         <GoogleMapLoader
-          containerElement={
-            <div style={{ height: `100%`  }} />
-          }
-          googleMapElement={
-            <GoogleMap
-              ref={(map) => console.log(map)}
-              defaultZoom={5}
-              defaultCenter={{ lat: Meteor.user() ? Meteor.user().profile.latitude : 35 , lng: Meteor.user() ? Meteor.user().profile.longitude : 88 }}
-            >
-            {this.props.experiences.map((marker, index) => {
-              let pos = {
-                lat: marker.latitude,
-                lng: marker.longitude
-              }
-              return (
-                <Marker
-                  position={pos}
-                  key={marker._id}
-                  onMouseover={this.hover.bind(null, marker)}>
+        containerElement={
+          <div style={{ height: `100%`  }} />
+        }
+        googleMapElement={
+          <GoogleMap
+          ref={(map) => console.log(map)}
+          defaultZoom={5}
+          defaultCenter={{ lat: Meteor.user() ? Meteor.user().profile.latitude : 35 , lng: Meteor.user() ? Meteor.user().profile.longitude : 88 }}
+          >
+          {this.props.experiences.map((marker, index) => {
+            let pos = {
+              lat: marker.latitude,
+              lng: marker.longitude
+            }
+            return (
+              <Marker
+              position={pos}
+              key={marker._id}
+              onMouseover={this.hover.bind(null, marker)}>
 
-                  {marker.showInfo ? this.showDetail(marker) : null}
+              {marker.showInfo ? this.showDetail(marker) : null}
 
 
-                  </Marker>
-              );
-            })}
-            </GoogleMap>
-          }
+              </Marker>
+            );
+          })}
+          </GoogleMap>
+        }
         />
-      </div>
-      {exp}
-      </div>
-    )
+        </div>
+        {exp}
+        </div>
+      )
+    } else {
+      return <div>Loading...</div>
+    }
   }
 }
 

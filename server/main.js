@@ -30,8 +30,8 @@ Meteor.methods({
         console.log("email sent!");
     },
 
-    getUserMail: function(id) {
-      Meteor.users.findOne({ _id: id });
+    getUser: function() {
+      return Meteor.user();
     },
 
     getExpByLocation: function(location) {
@@ -57,7 +57,7 @@ Meteor.methods({
       newArray.sort(function(a, b) {
         return a.distance - b.distance
       });
-      
+
       return newArray;
     }
 

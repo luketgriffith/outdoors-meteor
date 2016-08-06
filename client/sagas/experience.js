@@ -37,7 +37,7 @@ function* reserve(action) {
 
 function* getExp(action) {
   try {
-  
+
   } catch(err) {
     //do something
     console.log('fatal error dude')
@@ -45,10 +45,13 @@ function* getExp(action) {
 }
 
 function* getSingleExp(action) {
+  console.log('action: ', action)
   let expObj = {}
   try{
     const exp = yield Experiences.find({ _id: action.payload._id }).fetch();
+    console.log('exp: ', exp)
     const user = yield Meteor.users.find({ _id: exp[0].user }).fetch();
+    console.log('user: ', user)
     Object.assign(expObj, exp[0]);
     expObj.user = user[0];
     yield put({

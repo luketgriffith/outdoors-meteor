@@ -73,12 +73,14 @@ class CreateExp extends Component {
   }
 
   render() {
-    return(
-      <div>
+
+      return(
+        <div>
         <CreateForm createExp={this.createExp} blockDates={this.blockDates} uploadImages={this.uploadImages}/>
 
-      </div>
-    )
+        </div>
+      )
+  
   }
 }
 

@@ -23,12 +23,12 @@ export default class Main extends Component{
           <Navbar>
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="/welcome">Welcome{user}</a>
+                <Link to="/welcome">Welcome{user}</Link>
               </Navbar.Brand>
             </Navbar.Header>
             <Nav>
-              <NavItem href="/welcome">Home</NavItem>
-              <NavItem href="/createExperience">Create Experience</NavItem>
+              <Link to="/welcome">Home</Link>
+              <Link to="/createExperience">Create Experience</Link>
 
             </Nav>
           </Navbar>

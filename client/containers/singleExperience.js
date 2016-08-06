@@ -23,6 +23,7 @@ class SingleExperience extends Component {
 
   componentWillMount() {
     let { dispatch, params } = this.props;
+
     dispatch({
       type: 'GET_SINGLE_EXPERIENCE',
       payload: {
@@ -121,7 +122,6 @@ class SingleExperience extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     user: state.auth.user,
     experiences: state.experiences,
