@@ -11,10 +11,46 @@ class Home extends Component{
 
     this.signIn = this.signIn.bind(this);
     this.signUp = this.signUp.bind(this);
+    this.toggleSignIn = this.toggleSignIn.bind(this);
+    this.toggleSignUp = this.toggleSignUp.bind(this);
+    this.dismiss = this.dismiss.bind(this);
   }
   componentWillMount() {
-
+    this.setState({
+      signIn: false,
+      signUp: false,
+      logInBtn: true,
+      signUpBtn: true
+    });
   }
+
+  dismiss() {
+    this.setState({
+      signIn: false,
+      signUp: false,
+      logInBtn: true,
+      signUpBtn: true
+    })
+  }
+
+  toggleSignIn() {
+    this.setState({
+      signIn: true,
+      signUp: false,
+      logInBtn: false,
+      signUpBtn: false
+    });
+  }
+
+  toggleSignUp() {
+    this.setState({
+      signIn: false,
+      signUp: true,
+      logInBtn: false,
+      signUpBtn: false
+    });
+  }
+
 
   signIn(e) {
     e.preventDefault();
@@ -75,11 +111,15 @@ class Home extends Component{
       return (
         <div className="homePage">
           <h3>Outdoors</h3>
-          <div className="signInForm col-md-6">
-            <SignIn signIn={this.signIn}/>
+          <div className="home-buttons">
+            <button onClick={this.toggleSignIn} style={{ display: this.state.logInBtn ? "inline-block" : "none" }}>Log In</button>
+            <button onClick={this.toggleSignUp} style={{ display: this.state.signUpBtn ? "inline-block" : "none" }}>Sign Up</button>
           </div>
-          <div className="signUpForm col-md-6">
-            <SignUp signUp={this.signUp} />
+          <div className="signInForm" style={{ display: this.state.signIn ? "block" : "none" }}>
+            <SignIn signIn={this.signIn} dismiss={this.dismiss}/>
+          </div>
+          <div className="signUpForm" style={{ display: this.state.signUp ? "block" : "none" }}>
+            <SignUp signUp={this.signUp} dismiss={this.dismiss}/>
           </div>
         </div>
       )

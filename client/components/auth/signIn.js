@@ -5,14 +5,15 @@ class SignIn extends Component {
   render() {
     const {fields: {email, password}} = this.props;
     return (
-      <div>
+      <div className="signInFormInt">
         <h4>Sign In</h4>
+        <span onClick={this.props.dismiss}>X</span>
         <form onSubmit={this.props.signIn} className="form">
-          <div>
+          <div className="input-field">
             <label>Email</label>
             <input type="text" placeholder="Email" {...email}/>
           </div>
-          <div>
+          <div className="input-field">
             <label>Password</label>
             <input type="password" placeholder="Password" {...password}/>
           </div>

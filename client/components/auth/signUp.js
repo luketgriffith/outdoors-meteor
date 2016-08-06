@@ -5,27 +5,28 @@ class SignUp extends Component {
   render() {
     const {fields: {email, password, firstName, lastName, address}} = this.props;
     return (
-      <div>
+      <div className="signUpFormInt">
       <h4>Sign Up</h4>
+      <span onClick={this.props.dismiss}>X</span>
       <form onSubmit={this.props.signUp} className="form">
-        <div>
+        <div className="input-field">
           <label>Email</label>
           <input type="text" placeholder="Email" {...email}/>
         </div>
-        <div>
+        <div className="input-field">
           <label>Password</label>
           <input type="password" placeholder="password" {...password}/>
         </div>
-        <div>
+        <div className="input-field">
           <label>First Name</label>
           <input type="text" placeholder="First Name" {...firstName}/>
         </div>
-        <div>
+        <div className="input-field">
           <label>Last Name</label>
           <input type="text" placeholder="Last Name" {...lastName}/>
         </div>
-        <div>
-          <label>Zip Code</label>
+        <div className="input-field">
+          <label>Address</label>
           <input type="text" placeholder="Address" {...address} />
         </div>
         <button type="submit">Submit</button>

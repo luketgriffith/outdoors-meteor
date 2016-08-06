@@ -1,8 +1,56 @@
 .signInForm{
   background-color: transparent;
+  span{
+    float: right;
+    background-color: #EEE;
+    border-radius: 100%;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  form{
+    padding: 10px;
+    border-radius: 5px;
+
+    background-color: #EEE;
+    .input-field{
+      margin: 5px 0;
+    }
+    label{
+      display: block;
+    }
+  }
 }
+
+.signInFormInt{
+  width: 50%;
+  margin: 20px auto;
+}
+
+.signUpFormInt{
+  width: 50%;
+  margin: 20px auto;
+}
+
 .signUpForm{
   background-color: transparent;
+  span{
+    float: right;
+    background-color: #EEE;
+    border-radius: 100%;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  form{
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #EEE;
+    .input-field{
+      margin: 5px 0;
+    }
+    label{
+      display: block;
+    }
+  }
 }
 .homePage{
   height: 100vh;
