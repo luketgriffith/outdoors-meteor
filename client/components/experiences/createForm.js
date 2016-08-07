@@ -4,7 +4,7 @@ import Datetime from 'react-datetime';
 
 class CreateForm extends Component {
   render() {
-    const {fields: {title, description, address, state, zip, city}} = this.props;
+    const {fields: {title, description, address, state, zip, city, type}} = this.props;
     return (
       <div>
         <h4>Create Experience</h4>
@@ -13,6 +13,18 @@ class CreateForm extends Component {
             <label>Title</label>
             <input type="text" placeholder="Title" {...title}/>
           </div>
+          <div>
+            <label>Experience Type</label>
+            <select {...type}>
+              <option value="" disabled>Select Experience Type</option>
+              <option value="camping">Camping</option>
+              <option value="fishing">Fishing</option>
+              <option value="hiking">Hiking</option>
+              <option value="swimming">Swimming</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
           <div>
             <label>Description</label>
             <textarea type="text" placeholder="Description" {...description}/>
@@ -103,7 +115,7 @@ class CreateForm extends Component {
 
 CreateForm = reduxForm({ // <----- THIS IS THE IMPORTANT PART!
   form: 'createForm',                           // a unique name for this form
-  fields: ['title', 'description', 'address', 'state', 'zip', 'city'] // all the fields in your form
+  fields: ['title', 'description', 'address', 'state', 'zip', 'city', 'type'] // all the fields in your form
 })(CreateForm);
 
 export default CreateForm;

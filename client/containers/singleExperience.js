@@ -32,6 +32,7 @@ class SingleExperience extends Component {
     })
   }
 
+
   componentWillUnmount() {
     let { dispatch, params } = this.props;
     dispatch({
@@ -74,31 +75,43 @@ class SingleExperience extends Component {
 
   render(){
     let exp;
+    let images;
+    if(this.props.experiences.singleExperience.images) {
+      images = this.props.experiences.singleExperience.images.map((img) => {
+        return <img src={img.url} />
+      })
+    } else { images = <div></div>}
+
     if(this.props.experiences.singleExperience._id.length > 0) {
 
       exp = (
         <div>
-          <h4>{this.props.experiences.singleExperience.title}</h4>
-          <h5>Pictures Go Here</h5>
-          <p>{this.props.experiences.singleExperience.description}</p>
-          <div className="userDetails">
-            <h5>{this.props.experiences.singleExperience.user.profile.firstName} {this.props.experiences.singleExperience.user.profile.lastName}</h5>
+          <div className="singleExp">
+            <h4>{this.props.experiences.singleExperience.title}- {this.props.experiences.singleExperience.city}, {this.props.experiences.singleExperience.state}</h4>
+            <div className="imageGallery">
+              {images}
+            </div>
+            <p>{this.props.experiences.singleExperience.description}</p>
+            <div className="userDetails">
+              <h5>{this.props.experiences.singleExperience.user.profile.firstName} {this.props.experiences.singleExperience.user.profile.lastName}</h5>
+            </div>
           </div>
-          <div style={{ height: 300 }} className="map">
-            <GoogleMapLoader
-              containerElement={
-                <div style={{ height: `100%`  }} />
-              }
-              googleMapElement={
-                <GoogleMap
-                  ref={(map) => console.log(map)}
-                  defaultZoom={12}
-                  defaultCenter={{ lat: this.props.experiences.singleExperience.latitude, lng: this.props.experiences.singleExperience.longitude }}
-                >
-                </GoogleMap>
-              }
-            />
-          </div>
+
+            <div style={{ height: 300 }} className="singleMap">
+              <GoogleMapLoader
+                containerElement={
+                  <div style={{ height: `100%`  }} />
+                }
+                googleMapElement={
+                  <GoogleMap
+                    ref={(map) => console.log(map)}
+                    defaultZoom={12}
+                    defaultCenter={{ lat: this.props.experiences.singleExperience.latitude, lng: this.props.experiences.singleExperience.longitude }}
+                  >
+                  </GoogleMap>
+                }
+              />
+            </div>
           <div>
             <h5>Available Dates</h5>
             <Datetime onChange={this.selectDate} isValidDate={this.validDate} input={false} open={true}/>

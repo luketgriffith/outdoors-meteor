@@ -42,7 +42,6 @@ class Welcome extends Component {
       }
     })
 
-    console.log(newArray)
     dispatch({
       type: 'HOVER',
       payload: newArray
@@ -56,9 +55,9 @@ class Welcome extends Component {
     return(
       <InfoWindow
         onCloseclick={this.handleMarkerClose.bind(null, marker)}>
-        <div>
+        <div className="hoverExp">
           <h5 onClick={() => browserHistory.push("/experiences/" + marker._id)}>{marker.title}</h5>
-          <h5>More info here</h5>
+          <p>{marker.description}</p>
           <div className="imgRow">
             {marker.images.map((img)=>{
               return <img src={img.url} />
@@ -103,8 +102,7 @@ class Welcome extends Component {
     if(Meteor.user()){
       return(
         <div>
-        <h4>Welcome!</h4>
-        <HoverExp visible={this.state.visible} dismiss={this.dismiss}/>
+        //<HoverExp visible={this.state.visible} dismiss={this.dismiss}/>
         <div style={{ height: 1000 }} className="map">
         <GoogleMapLoader
         containerElement={

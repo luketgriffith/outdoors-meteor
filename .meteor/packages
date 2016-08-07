@@ -24,3 +24,5 @@ email
 cunneen:mailgun
 autopublish
 fourseven:scss
+kadira:flow-router
+iron:router

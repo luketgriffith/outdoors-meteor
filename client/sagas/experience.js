@@ -5,6 +5,7 @@ import { Experiences } from '../../imports/api/experience';
 import { Reservations } from '../../imports/api/reservations';
 
 function* confirmRes(action) {
+  console.log('action: ', action)
   try {
     const res = yield Reservations.insert(action);
     yield Meteor.call('sendEmail', {
@@ -14,6 +15,14 @@ function* confirmRes(action) {
       text: action.payload.reservation.reservedBy.profile.firstName + action.payload.reservation.reservedBy.profile.lastName + ' has reserved your experience: ' + action.payload.reservation.experience.title + ' at : ' +
       action.payload.selectedDate + '. Please check your dashboard for more details.'
     });
+
+    yield Meteor.call('sendEmail', {
+      to: action.payload.reservation.reservedBy.emails[0].address,
+      from: 'Webmaster at GoFishCampHike',
+      subject: 'Your pending reservation at GoFishCampHike',
+      text: "Congratulations! You just reserved an awesome outdoor experience. You will be notified as soon as the host has confirmed your reservation."
+    });
+
     yield browserHistory.push('/welcome');
   } catch(err) {
     console.log('didnt work dude')
@@ -21,7 +30,6 @@ function* confirmRes(action) {
 }
 
 function* reserve(action) {
-  console.log(action)
   try {
     yield put({ type: 'RESERVE_EXP', payload: {
       experience: action.payload.experience,
@@ -45,13 +53,13 @@ function* getExp(action) {
 }
 
 function* getSingleExp(action) {
-  console.log('action: ', action)
+
   let expObj = {}
   try{
     const exp = yield Experiences.find({ _id: action.payload._id }).fetch();
-    console.log('exp: ', exp)
+
     const user = yield Meteor.users.find({ _id: exp[0].user }).fetch();
-    console.log('user: ', user)
+
     Object.assign(expObj, exp[0]);
     expObj.user = user[0];
     yield put({
@@ -65,8 +73,6 @@ function* getSingleExp(action) {
 
 function* createExp(action) {
   try {
-    // const geocoded = yield call(geocode, action.payload)
-    // console.log('wat wat wat: ', geocoded)
     const exp = yield Experiences.insert(action.payload)
     browserHistory.push('/welcome')
   } catch(err) {

@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import '../imports/api/tasks.js';
 import { Experiences } from '../imports/api/experience.js';
 import '../imports/api/reservations.js';
@@ -16,7 +17,17 @@ Meteor.startup(() => {
   });
 });
 
-
+Router.route('/verify-email/:token', function () {
+  var params = this.params;
+  var token = params.token;
+  Accounts.verifyEmail( token, ( error ) =>{
+      if ( error ) {
+        console.log('nooooooooo')
+      } else {
+        this.redirect('/welcome');
+      }
+    });
+}, {where: 'server'});
 
 
 Meteor.methods({
@@ -28,6 +39,13 @@ Meteor.methods({
             text: mailFields.text
         });
         console.log("email sent!");
+    },
+
+    sendVerificationLink() {
+      let userId = Meteor.userId();
+      if ( userId ) {
+        return Accounts.sendVerificationEmail( userId );
+      }
     },
 
     getUser: function() {

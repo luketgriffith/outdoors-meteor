@@ -96,11 +96,12 @@ class Home extends Component{
             console.log('error', err)
             alert('Error Signing Up')
           } else {
-            browserHistory.push('/welcome')
             dispatch({
               type: 'SET_USER',
               user: Meteor.user()
             });
+            Meteor.call('sendVerificationLink');
+            browserHistory.push('/welcome')
           }
         })
       }
