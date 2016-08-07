@@ -5,11 +5,6 @@ import { Link } from 'react-router';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 export default class Main extends Component{
-  componentWillMount() {
-      // this.lock = new Auth0Lock(config.clientId, config.domain);
-      // this.setState({idToken: this.getIdToken()})
-  }
-
 
   render() {
     let user;
@@ -29,7 +24,7 @@ export default class Main extends Component{
             <Nav>
               <Link to="/welcome">Home</Link>
               <Link to="/createExperience">Create Experience</Link>
-
+              <Link to={"/profile/"+ this.props.user._id}>Profile</Link>
             </Nav>
           </Navbar>
             <div className="content-main">

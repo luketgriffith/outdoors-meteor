@@ -22,3 +22,4 @@ export const SINGLE_EXP_FLUSH = 'SINGLE_EXP_FLUSH';
 export const HOVER = 'HOVER';
 export const HOVER_CLOSE = 'HOVER_CLOSE';
 export const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
+export const SET_LOCATION = 'SET_LOCATION';

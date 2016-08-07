@@ -16,6 +16,7 @@ import CreateExp from './containers/createExp';
 import Reservation from './containers/reservation';
 import verifyEmail from './containers/verify';
 import about from './containers/about';
+import Profile from './containers/profile';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = compose(
@@ -40,6 +41,7 @@ Meteor.startup(() => {
           <Route path="/experiences/:experienceId" component={SingleExperience} />
           <Route path="/createExperience" component={CreateExp} />
           <Route path="/reservation" component={Reservation} />
+          <Route path="/profile/:userId" component={Profile} />
         </Route>
       </Router>
     </Provider>

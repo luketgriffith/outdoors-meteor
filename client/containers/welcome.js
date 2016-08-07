@@ -13,6 +13,7 @@ class Welcome extends Component {
     this.hover = this.hover.bind(this);
     this.showDetail = this.showDetail.bind(this);
     this.handleMarkerClose = this.handleMarkerClose.bind(this);
+    this.changeLocation = this.changeLocation.bind(this);
   }
   componentWillMount() {
     let { dispatch } = this.props;
@@ -26,6 +27,27 @@ class Welcome extends Component {
         experiences: res
       });
     });
+    if ("geolocation" in navigator) {
+      /* geolocation is available */
+      navigator.geolocation.getCurrentPosition(function(position) {
+        dispatch({
+          type: 'SET_LOCATION',
+          payload: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          }
+        })
+      });
+    } else {
+      console.log('location thing not working')
+      dispatch({
+        type: 'SET_LOCATION',
+        payload: {
+          latitude: Meteor.user().profile.latitude,
+          longitude: Meteor.user().profile.longitude
+        }
+      });
+    }
   }
 
   hover(marker) {
@@ -46,8 +68,6 @@ class Welcome extends Component {
       type: 'HOVER',
       payload: newArray
     });
-
-
   }
 
 
@@ -85,6 +105,9 @@ class Welcome extends Component {
       type: 'HOVER_CLOSE',
       payload: newArray
     });
+  }
+
+  changeLocation() {
 
   }
 
@@ -102,6 +125,10 @@ class Welcome extends Component {
     if(Meteor.user()){
       return(
         <div>
+        <div className="welcomeInfo">
+          <p>Welcome! Choose a nearby experience from the map below to get outside, or add your own! <a href="#" onClick={this.changeLocation}>Change Location</a></p>
+        </div>
+
         <div style={{ height: 1000 }} className="map">
         <GoogleMapLoader
         containerElement={
@@ -111,7 +138,7 @@ class Welcome extends Component {
           <GoogleMap
           ref={(map) => console.log(map)}
           defaultZoom={5}
-          defaultCenter={{ lat: Meteor.user() ? Meteor.user().profile.latitude : 35 , lng: Meteor.user() ? Meteor.user().profile.longitude : 88 }}
+          center={{ lat: this.props.location.latitude, lng: this.props.location.longitude }}
           >
           {this.props.experiences.map((marker, index) => {
             let pos = {
@@ -147,6 +174,7 @@ function mapStateToProps(state) {
   console.log('state: ', state)
   return {
     user: state.auth.user,
+    location: state.auth.location,
     experiences: state.experiences.experiences
   }
 }
