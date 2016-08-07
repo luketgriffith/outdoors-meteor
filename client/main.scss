@@ -61,7 +61,12 @@
     text-decoration: underline;
   }
 }
-
+.about-link{
+    float: right;
+    margin: 30px;
+    font-size: 18px;
+    color: black;
+}
 .homePage{
   height: 100vh;
   background-image: url("https://hd.unsplash.com/photo-1414394825544-67fa8e8e28ea");
@@ -72,6 +77,18 @@
     text-align: center;
   }
 }
+
+.aboutPage{
+  height: 100vh;
+  background-image: url("https://hd.unsplash.com/photo-1446478129398-42db46ee0475");
+  background-size: 100%;
+  padding: 15%;
+  h3{
+    margin: 0 0 100px 0;
+    text-align: center;
+  }
+}
+
 .home-buttons{
   text-align: center;
   button{

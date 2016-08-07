@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
+// import { Accounts } from 'meteor/accounts-base';
 import '../imports/api/tasks.js';
 import { Experiences } from '../imports/api/experience.js';
 import '../imports/api/reservations.js';
@@ -16,18 +16,6 @@ Meteor.startup(() => {
     return Experiences.find({});
   });
 });
-
-Router.route('/verify-email/:token', function () {
-  var params = this.params;
-  var token = params.token;
-  Accounts.verifyEmail( token, ( error ) =>{
-      if ( error ) {
-        console.log('nooooooooo')
-      } else {
-        this.redirect('/welcome');
-      }
-    });
-}, {where: 'server'});
 
 
 Meteor.methods({

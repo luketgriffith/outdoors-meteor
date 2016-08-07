@@ -102,7 +102,6 @@ class Welcome extends Component {
     if(Meteor.user()){
       return(
         <div>
-        //<HoverExp visible={this.state.visible} dismiss={this.dismiss}/>
         <div style={{ height: 1000 }} className="map">
         <GoogleMapLoader
         containerElement={

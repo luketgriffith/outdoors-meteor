@@ -5,8 +5,6 @@ import { Link } from 'react-router';
 import Calendar from 'rc-calendar';
 import Datetime from 'react-datetime';
 import moment from 'moment';
-// import Map from '../components/maps/map';
-// import { GoogleMap } from "react-google-maps";
 import 'rc-calendar/assets/index.css';
 import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 import ExperienceActions from '../actions/experiences';

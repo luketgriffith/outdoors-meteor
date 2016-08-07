@@ -5,7 +5,7 @@ import SignUp from '../components/auth/signUp';
 import { Accounts } from 'meteor/accounts-base';
 import { Link, browserHistory } from 'react-router';
 
-class Home extends Component{
+class About extends Component{
   constructor(props) {
     super(props);
 
@@ -111,10 +111,11 @@ class Home extends Component{
   render() {
       return (
         <div>
-          <Link to="/about" className="about-link">More Info</Link>
-          <div className="homePage">
-            <h3>Outdoors</h3>
+          <Link to="/" className="about-link">Home</Link>
+          <div className="aboutPage">
+            <h3>About Outdoors</h3>
             <div className="home-buttons">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
               <button onClick={this.toggleSignIn} style={{ display: this.state.logInBtn ? "inline-block" : "none" }}>Log In</button>
               <button onClick={this.toggleSignUp} style={{ display: this.state.signUpBtn ? "inline-block" : "none" }}>Sign Up</button>
 
@@ -138,4 +139,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(About);
