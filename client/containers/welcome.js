@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import { GoogleMapLoader, GoogleMap, Marker, InfoWindow } from "react-google-maps";
 import HoverExp from '../components/experiences/expHover';
 import { browserHistory } from 'react-router';
+import ChangeModal from '../components/welcome/changeModal';
 
 class Welcome extends Component {
   constructor(props) {
@@ -14,11 +15,14 @@ class Welcome extends Component {
     this.showDetail = this.showDetail.bind(this);
     this.handleMarkerClose = this.handleMarkerClose.bind(this);
     this.changeLocation = this.changeLocation.bind(this);
+    this.dismiss = this.dismiss.bind(this);
+    this.changeUserLocation = this.changeUserLocation.bind(this);
   }
   componentWillMount() {
     let { dispatch } = this.props;
     this.setState({
-      showInfo: false
+      showInfo: false,
+      changeModal: false
     });
 
     Meteor.call('getExpByLocation', function (err, res) {
@@ -108,7 +112,37 @@ class Welcome extends Component {
   }
 
   changeLocation() {
+    this.setState({
+      changeModal: true
+    });
+  }
 
+  dismiss(){
+    this.setState({
+      changeModal: false
+    });
+  }
+
+  changeUserLocation(e) {
+    e.preventDefault();
+    let { dispatch, form } = this.props;
+    var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ 'address': form.changeLocation.address.value}, function(res, status) {
+        console.log('status: ', status);
+        if(status === 'OK') {
+          let data = {
+            latitude: res[0].geometry.viewport.f.b,
+            longitude: res[0].geometry.viewport.b.b,
+          }
+          dispatch({
+            type: 'SET_LOCATION',
+            payload: data
+          });
+        }
+    })
+    this.setState({
+      changeModal: false
+    });
   }
 
   render(){
@@ -125,8 +159,13 @@ class Welcome extends Component {
     if(Meteor.user()){
       return(
         <div>
+        <ChangeModal
+          visible={this.state.changeModal}
+          dismiss={this.dismiss}
+          changeLocation={this.changeUserLocation}
+        />
         <div className="welcomeInfo">
-          <p>Welcome! Choose a nearby experience from the map below to get outside, or add your own! <a href="#" onClick={this.changeLocation}>Change Location</a></p>
+          <p>Welcome! Choose a nearby experience from the map below, or add your own! <a href="#" onClick={this.changeLocation}>Change Location</a></p>
         </div>
 
         <div style={{ height: 1000 }} className="map">
@@ -137,7 +176,7 @@ class Welcome extends Component {
         googleMapElement={
           <GoogleMap
           ref={(map) => console.log(map)}
-          defaultZoom={5}
+          defaultZoom={10}
           center={{ lat: this.props.location.latitude, lng: this.props.location.longitude }}
           >
           {this.props.experiences.map((marker, index) => {
@@ -175,7 +214,8 @@ function mapStateToProps(state) {
   return {
     user: state.auth.user,
     location: state.auth.location,
-    experiences: state.experiences.experiences
+    experiences: state.experiences.experiences,
+    form: state.form
   }
 }
 
