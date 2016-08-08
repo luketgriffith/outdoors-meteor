@@ -110,7 +110,7 @@ class SingleExperience extends Component {
                 }
               />
             </div>
-          <div>
+          <div className="availableDates">
             <h5>Available Dates</h5>
             <Datetime onChange={this.selectDate} isValidDate={this.validDate} input={false} open={true}/>
           </div>

@@ -21,6 +21,16 @@
   }
 }
 
+.imageGallery{
+  width: 100%;
+  overflow-x: scroll;
+  img{
+    display: inline-block;
+    width: 300px;
+    margin: 20px;
+  }
+}
+
 .signInFormInt{
   width: 50%;
   margin: 20px auto;
@@ -124,8 +134,16 @@
 }
 
 .singleMap{
-  width: 80%;
+  display: inline-block;
+  width: 40%;
   margin: 0 auto;
+  padding: 20px;
+}
+
+.availableDates{
+  display: inline-block;
+  width: 60%;
+  padding: 20px;
 }
 
 #hover{

@@ -1,0 +1,28 @@
+{
+  "servers": [
+    {
+      "host": "198.199.76.49",
+      "username": "root",
+      "pem": "~/.ssh/id_rsa",
+      "env": {}
+    }
+  ],
+
+  "setupMongo": true,
+
+
+  "appName": "outdoors",
+  "app": "~/finalAnswer",
+
+
+  "env": {
+    "PORT": 80,
+    "ROOT_URL": "http://198.199.76.49"
+  },
+
+
+  "deployCheckWaitTime": 15,
+
+  
+  "enableUploadProgressBar": true
+}
