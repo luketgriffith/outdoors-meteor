@@ -5,13 +5,34 @@ import { Link } from 'react-router';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 export default class Main extends Component{
+  constructor(props){
+    super(props);
+    this.setUser = this.setUser.bind(this);
+  }
+
+  setUser(user) {
+    let { dispatch } = this.props;
+    dispatch({
+      type: 'SET_USER',
+      user: user
+    });
+  }
 
   render() {
+    let childs;
+    if(!this.props.currentUser) {
+      childs = <div>Loading...</div>
+    } else {
+      childs = this.props.children
+    }
+    //current user prop is set by Meteor- we want it available in redux
+    this.setUser(this.props.currentUser);
+
     let user;
-      if(!this.props.user.profile) {
+      if(!this.props.currentUser) {
         user = '!'
       } else {
-        user = ' ' + this.props.user.profile.firstName + '!';
+        user = ' ' + this.props.currentUser.profile.firstName + '!';
       }
       return (
         <div>
@@ -24,11 +45,11 @@ export default class Main extends Component{
             <Nav>
               <Link to="/welcome">Home</Link>
               <Link to="/createExperience">Create Experience</Link>
-              <Link to={"/profile/"+ this.props.user._id}>Profile</Link>
+              <Link to={"/profile"}>Profile</Link>
             </Nav>
           </Navbar>
             <div className="content-main">
-            {this.props.children}
+            {childs}
             </div>
           </div>
         )
@@ -37,6 +58,7 @@ export default class Main extends Component{
 }
 
 function mapStateToProps(state) {
+  console.log(state);
   return {
     user: state.auth.user
   }

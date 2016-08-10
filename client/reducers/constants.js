@@ -23,3 +23,5 @@ export const HOVER = 'HOVER';
 export const HOVER_CLOSE = 'HOVER_CLOSE';
 export const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
 export const SET_LOCATION = 'SET_LOCATION';
+export const SET_USER_EXP = 'SET_USER_EXP';
+export const SET_USER_LISTINGS = 'SET_USER_LISTINGS';

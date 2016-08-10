@@ -7,7 +7,15 @@ import { Reservations } from '../../imports/api/reservations';
 function* confirmRes(action) {
   console.log('action: ', action)
   try {
-    const res = yield Reservations.insert(action);
+    let reservation = {
+      experience: action.payload.reservation.experience._id,
+      host: action.payload.reservation.host._id,
+      reservedBy: action.payload.reservation.reservedBy._id,
+      date: action.payload.selectedDate,
+      confirmed: false,
+      isCompleted: false
+    }
+    const res = yield Reservations.insert(reservation);
     yield Meteor.call('sendEmail', {
       to: action.payload.reservation.host.emails[0].address,
       from: 'Webmaster at GoFishCampHike',
@@ -80,6 +88,40 @@ function* createExp(action) {
   }
 }
 
+function* getUserExp(action) {
+  try{
+    const res = yield Reservations.find({ reservedBy: action.user }).fetch()
+    const newArray = res.map((r) => {
+      const exp = Experiences.find({ _id: r.experience }).fetch()
+      let newObj = {}
+      Object.assign(newObj, exp[0]);
+      newObj.reservationId = r._id;
+      newObj.confirmed = r.confirmed;
+      newObj.date = r.date;
+      return newObj;
+    })
+    yield put({
+      type: 'SET_USER_EXP',
+      payload: newArray
+    });
+  } catch(err) {
+    console.log('nope not this time')
+  }
+}
+
+function* getUserList(action) {
+  try{
+    const res = yield Experiences.find({ user: action.user }).fetch()
+    console.log('found em: ', res);
+    yield put({
+      type: 'SET_USER_LISTINGS',
+      payload: res
+    })
+  } catch(err) {
+
+  }
+}
+
 export function* getExperiences() {
   yield* takeEvery('GET_EXPERIENCES', getExp)
 }
@@ -100,13 +142,23 @@ export function* watchConfirm() {
   yield* takeEvery('CONFIRM_RES', confirmRes)
 }
 
+export function* watchUserExp() {
+  yield* takeEvery('GET_USER_EXP', getUserExp)
+}
+
+export function* watchUserList() {
+  yield* takeEvery('GET_USER_LISTINGS', getUserList)
+}
+
 export default function* homeSaga() {
   yield [
     getExperiences(),
     watchGetSingleExp(),
     watchCreate(),
     watchReserve(),
-    watchConfirm()
+    watchConfirm(),
+    watchUserExp(),
+    watchUserList()
     // more sagas go here...
   ];
 }

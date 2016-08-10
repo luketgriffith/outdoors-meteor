@@ -67,6 +67,7 @@ class Home extends Component{
           type: 'SET_USER',
           user: Meteor.user()
         });
+        localStorage.setItem( '_id', Meteor.user()._id )
         browserHistory.push('/welcome')
       }
     })

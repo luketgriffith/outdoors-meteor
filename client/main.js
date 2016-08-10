@@ -5,9 +5,11 @@ import { Route, IndexRoute } from 'react-router';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+// import { authenticate } from './auth';
 import reducer from './reducers/reducer';
 import rootSaga from './sagas/index';
-
+import AppContainer from './containers/appContainer';
+import { createContainer } from 'meteor/react-meteor-data';
 import Main from './containers/main';
 import Home from './containers/home';
 import Welcome from './containers/welcome';
@@ -24,6 +26,7 @@ const store = compose(
    window.devToolsExtension ? window.devToolsExtension() : f => f,
 )(createStore)(reducer);
 
+
 // Run sagas
 sagaMiddleware.run(rootSaga);
 
@@ -32,16 +35,20 @@ Meteor.startup(() => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <Router history={browserHistory} >
+      <Router
+        history={browserHistory}
+        // onLoad={authenticate(store)}
+        // onUpdate={authenticate(store)}
+       >
         <Route path="/" component={Home}/>
         <Route path="/verify-email/:token" component={verifyEmail} />
         <Route path="/about" component={about} />
-        <Route component={Main}>
+        <Route component={AppContainer}>
           <Route path="/welcome" component={Welcome} />
           <Route path="/experiences/:experienceId" component={SingleExperience} />
           <Route path="/createExperience" component={CreateExp} />
           <Route path="/reservation" component={Reservation} />
-          <Route path="/profile/:userId" component={Profile} />
+          <Route path="/profile" component={Profile} />
         </Route>
       </Router>
     </Provider>
