@@ -8,9 +8,13 @@ import { Reservations } from '../../imports/api/reservations';
 function* getMsg(action) {
   try{
     let msg = yield Messages.find({ to: action.user }).fetch()
+    let sent = yield Messages.find({ owner: action.user }).fetch()
     yield put({
       type: 'GET_MESSAGES_SUCCESS',
-      payload: msg
+      payload: {
+        received: msg,
+        sent: sent
+      }
     });
   } catch(err) {
     console.log('AHHHHH no')

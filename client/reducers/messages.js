@@ -1,7 +1,10 @@
 import * as constants from './constants';
 
 const initialState = {
-  messages: [],
+  messages: {
+    sent: [],
+    received: []
+  },
   conversation: {
     visible: false,
     toMessages: [],
