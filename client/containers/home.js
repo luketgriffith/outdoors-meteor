@@ -4,6 +4,7 @@ import SignIn from '../components/auth/signIn';
 import SignUp from '../components/auth/signUp';
 import { Accounts } from 'meteor/accounts-base';
 import { Link, browserHistory } from 'react-router';
+import superagent from 'superagent';
 
 class Home extends Component{
   constructor(props) {
@@ -77,6 +78,21 @@ class Home extends Component{
     e.preventDefault();
     let { dispatch, form } = this.props;
 
+    // let data = {
+    //   address: form.signUp.email.value,
+    //   api_key: 'pubkey-252bed34819a680c8b154bf61ba4128b'
+    // }
+    // superagent
+    //   .get('https://api.mailgun.net/v3/address/validate')
+    //
+    //   .end((err, res) => {
+    //     if(err) {
+    //       alert('error: ', err)
+    //     } else {
+    //       alert('not error: ', res)
+    //     }
+    //   })
+    
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'address': form.signUp.address.value}, function(res, status) {
       if(status == 'OK') {

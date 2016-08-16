@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 // import { Accounts } from 'meteor/accounts-base';
 import '../imports/api/tasks.js';
 import { Experiences } from '../imports/api/experience.js';
+import { Messages } from '../imports/api/messages.js';
 import '../imports/api/reservations.js';
 import { Email } from 'meteor/email'
 import geolib from 'geolib';
@@ -65,6 +66,18 @@ Meteor.methods({
       });
 
       return newArray;
+    },
+
+    sendMessage: function(msg) {
+      console.log('to: ', msg.to)
+      console.log('owner: ', msg.owner)
+      console.log('message: ', msg.message)
+      let newMsg = {
+        to: msg.to,
+        owner: msg.owner,
+        message: msg.message
+      }
+      Messages.insert(newMsg)
     }
 
 });

@@ -2,6 +2,7 @@ import { takeEvery, takeLatest } from 'redux-saga';
 import { call, put, fork } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { Experiences } from '../../imports/api/experience';
+import { Messages } from '../../imports/api/messages';
 import { Reservations } from '../../imports/api/reservations';
 
 function* confirmRes(action) {
@@ -16,19 +17,31 @@ function* confirmRes(action) {
       isCompleted: false
     }
     const res = yield Reservations.insert(reservation);
-    yield Meteor.call('sendEmail', {
-      to: action.payload.reservation.host.emails[0].address,
-      from: 'Webmaster at GoFishCampHike',
-      subject: 'Your experience was reserved!',
-      text: action.payload.reservation.reservedBy.profile.firstName + action.payload.reservation.reservedBy.profile.lastName + ' has reserved your experience: ' + action.payload.reservation.experience.title + ' at : ' +
-      action.payload.selectedDate + '. Please check your dashboard for more details.'
+    // yield Meteor.call('sendEmail', {
+    //   to: action.payload.reservation.host.emails[0].address,
+    //   from: 'Webmaster at GoFishCampHike',
+    //   subject: 'Your experience was reserved!',
+    //   text: action.payload.reservation.reservedBy.profile.firstName + action.payload.reservation.reservedBy.profile.lastName + ' has reserved your experience: ' + action.payload.reservation.experience.title + ' at : ' +
+    //   action.payload.selectedDate + '. Please check your dashboard for more details.'
+    // });
+    //
+    // yield Meteor.call('sendEmail', {
+    //   to: action.payload.reservation.reservedBy.emails[0].address,
+    //   from: 'Webmaster at GoFishCampHike',
+    //   subject: 'Your pending reservation at GoFishCampHike',
+    //   text: "Congratulations! You just reserved an awesome outdoor experience. You will be notified as soon as the host has confirmed your reservation."
+    // });
+
+    yield Meteor.call('sendMessage', {
+      to: action.payload.reservation.reservedBy._id,
+      owner: action.payload.reservation.host.profile.firstName,
+      message: 'Congratulations! You made a reservation.'
     });
 
-    yield Meteor.call('sendEmail', {
-      to: action.payload.reservation.reservedBy.emails[0].address,
-      from: 'Webmaster at GoFishCampHike',
-      subject: 'Your pending reservation at GoFishCampHike',
-      text: "Congratulations! You just reserved an awesome outdoor experience. You will be notified as soon as the host has confirmed your reservation."
+    yield Meteor.call('sendMessage', {
+      to: action.payload.reservation.host._id,
+      owner: action.payload.reservation.reservedBy.profile.firstName,
+      message: 'Your experience has been reserved!'
     });
 
     yield browserHistory.push('/welcome');
