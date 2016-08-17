@@ -27,7 +27,8 @@ class Profile extends Component {
     })
   }
 
-  viewConversation() {
+  viewConversation(msg) {
+    console.log('wat message dude: ', msg)
     let { dispatch } = this.props;
     dispatch({
       type: 'VIEW_CONVERSATION',
@@ -38,11 +39,22 @@ class Profile extends Component {
   typeMessage(e) {
     let { dispatch } = this.props;
     let msg = e.target.value;
-    console.log('the msg: ', msg)
+    dispatch({
+      type: 'TYPE_MESSAGE',
+      payload: msg
+    });
   }
 
-  sendMessage() {
-
+  sendMessage(e) {
+    e.preventDefault();
+    let { dispatch, conversation, user } = this.props;
+    dispatch({
+      type: 'SEND_MESSAGE',
+      payload: {
+        from: user,
+        to: ''
+      }
+    })
   }
 
 
@@ -82,11 +94,10 @@ class Profile extends Component {
     }
 
     let messages;
-    if(this.props.messages && this.props.messages.length > 0) {
-      messages = this.props.messages.map((msg) => {
-        console.log('msg: ', msg)
+    if(this.props.messages.received) {
+      messages = this.props.messages.received.map((msg) => {
         return (
-          <div onClick={this.viewConversation}>
+          <div onClick={this.viewConversation.bind(null, msg)}>
             <span>From: {msg.owner}</span>
             <p>{msg.message}</p>
           </div>

@@ -17,6 +17,7 @@ function* confirmRes(action) {
       isCompleted: false
     }
     const res = yield Reservations.insert(reservation);
+    yield Meteor.call('newRes', reservation);
     // yield Meteor.call('sendEmail', {
     //   to: action.payload.reservation.host.emails[0].address,
     //   from: 'Webmaster at GoFishCampHike',

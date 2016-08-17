@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 // import { Accounts } from 'meteor/accounts-base';
 import '../imports/api/tasks.js';
 import { Experiences } from '../imports/api/experience.js';
+import { Reservations } from '../imports/api/reservations.js';
 import { Messages } from '../imports/api/messages.js';
 import '../imports/api/reservations.js';
 import { Email } from 'meteor/email'
@@ -20,6 +21,14 @@ Meteor.startup(() => {
 
 
 Meteor.methods({
+  newRes: function(res) {
+    Reservations.insert(res);
+    let exp = Experiences.findOne({ _id: res.experience });
+    exp.dates.unavailableDates.push(res.date);
+    Experiences.update({ _id: res.experience }, {$set: { dates: { unavailableDates: exp.dates.unavailableDates } }});
+    return exp;
+  },
+
   sendEmail: function (mailFields) {
         Meteor.Mailgun.send({
             to: mailFields.to,
