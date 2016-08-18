@@ -35,13 +35,19 @@ function* confirmRes(action) {
 
     yield Meteor.call('sendMessage', {
       to: action.payload.reservation.reservedBy._id,
-      owner: action.payload.reservation.host.profile.firstName,
+      owner: {
+        _id: action.payload.reservation.host._id,
+        name: action.payload.reservation.host.profile.firstName
+      },
       message: 'Congratulations! You made a reservation.'
     });
 
     yield Meteor.call('sendMessage', {
       to: action.payload.reservation.host._id,
-      owner: action.payload.reservation.reservedBy.profile.firstName,
+      owner: {
+        _id: action.payload.reservation.reservedBy._id,
+        name: action.payload.reservation.reservedBy.profile.firstName
+      },
       message: 'Your experience has been reserved!'
     });
 

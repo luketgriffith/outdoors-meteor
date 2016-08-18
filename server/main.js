@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import '../imports/api/tasks.js';
 import { Experiences } from '../imports/api/experience.js';
 import { Reservations } from '../imports/api/reservations.js';
+import { Conversations } from '../imports/api/conversations.js';
 import { Messages } from '../imports/api/messages.js';
 import '../imports/api/reservations.js';
 import { Email } from 'meteor/email'
@@ -21,6 +22,7 @@ Meteor.startup(() => {
 
 
 Meteor.methods({
+
   newRes: function(res) {
     Reservations.insert(res);
     let exp = Experiences.findOne({ _id: res.experience });
@@ -77,16 +79,36 @@ Meteor.methods({
       return newArray;
     },
 
-    sendMessage: function(msg) {
-      console.log('to: ', msg.to)
-      console.log('owner: ', msg.owner)
-      console.log('message: ', msg.message)
-      let newMsg = {
+    sendMessage: function(msg, conversation) {
+      let content = {
         to: msg.to,
         owner: msg.owner,
         message: msg.message
       }
-      Messages.insert(newMsg)
+
+      if(conversation) {
+        let convo = Conversations.findOne({ _id: conversation });
+        if(convo) {
+          console.log('convo: ', convo)
+          let newMsg = convo.messages.push(content);
+          Conversations.update({ _id: conversation}, {$set: { messages: newMsg } });
+        } else {
+          let newConvo = {
+            to: msg.to,
+            owner: msg.owner,
+            messages: [content]
+          }
+          return Conversations.insert(newConvo);
+        }
+      } else {
+        let newConvo = {
+          to: msg.to,
+          owner: msg.owner,
+          messages: [content]
+        }
+        return Conversations.insert(newConvo);
+      }
+
     }
 
 });

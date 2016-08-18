@@ -10,6 +10,7 @@ class Profile extends Component {
     this.viewConversation = this.viewConversation.bind(this);
     this.typeMessage = this.typeMessage.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.dismiss = this.dismiss.bind(this);
   }
   componentWillMount() {
     let { dispatch, user } = this.props;
@@ -32,6 +33,14 @@ class Profile extends Component {
     let { dispatch } = this.props;
     dispatch({
       type: 'VIEW_CONVERSATION',
+      payload: msg
+    });
+  }
+
+  dismiss() {
+    let { dispatch } = this.props;
+    dispatch({
+      type: 'VIEW_CONVERSATION',
       payload: {}
     })
   }
@@ -50,10 +59,7 @@ class Profile extends Component {
     let { dispatch, conversation, user } = this.props;
     dispatch({
       type: 'SEND_MESSAGE',
-      payload: {
-        from: user,
-        to: ''
-      }
+      payload: conversation
     })
   }
 
@@ -94,12 +100,12 @@ class Profile extends Component {
     }
 
     let messages;
-    if(this.props.messages.received) {
-      messages = this.props.messages.received.map((msg) => {
+    if(this.props.conversation.conversation) {
+      messages = this.props.conversation.conversation.map((msg) => {
         return (
           <div onClick={this.viewConversation.bind(null, msg)}>
-            <span>From: {msg.owner}</span>
-            <p>{msg.message}</p>
+            <span>From: {msg.owner.name}</span>
+            <p>{msg.messages[0].message}</p>
           </div>
         )
       })
@@ -129,9 +135,10 @@ class Profile extends Component {
           {messages}
         </div>
         <Conversation
+          owner={this.props.user._id}
           visible={this.props.conversation.visible}
-          toMessages={this.props.conversation.toMessages}
-          fromMessages={this.props.conversation.fromMessages}
+          dismiss={this.dismiss}
+          conversation={this.props.conversation.view}
           typeMessage={this.typeMessage}
           sendMessage={this.sendMessage}
         />
@@ -145,7 +152,6 @@ function mapStateToProps(state) {
     user: state.auth.user,
     experiences: state.auth.userExp,
     listings: state.auth.userListings,
-    messages: state.messages.messages,
     conversation: state.messages.conversation
   }
 }
